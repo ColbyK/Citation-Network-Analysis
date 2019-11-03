@@ -5,39 +5,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import org.json.JSONObject;
 
 public class ReaderCNA {
 	BufferedReader br;
-	public ReaderCNA(String fileName, boolean zip) {
-		if(zip) {
-			readTXT(fileName);
-		}
-		else {
-			readTXT(fileName);
-		}
-	}
-	private void readZip(String fileName) {
-		InputStream stream;
-		try {
-			ZipFile zipFile = new ZipFile(fileName);
-			Enumeration<? extends ZipEntry> entries = zipFile.entries();
-			while(entries.hasMoreElements()){
-				ZipEntry entry = entries.nextElement();
-				stream = zipFile.getInputStream(entry);
-			}
-			zipFile.close();
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
+	public ReaderCNA(String fileName) {
+		readTXT(fileName);
 	}
 	private void readTXT(String fileName) {
 		try {

@@ -16,12 +16,10 @@ public class TreeCNA {
 		paper = obj;
 		branches = new ArrayList<TreeCNA>();
 		if(currentDepth < maxDepth) {
-			getBranches(data, maxDepth);
+			makeBranches(data, maxDepth);
 		}
 	}
-	public void getBranches(List<JSONObject> data, int maxDepth) {
-		//data.stream().forEach(s -> System.out.println(s.getJSONArray("references")));
-		//List<JSONObject> matches = data.stream().filter(s -> s.has("references") && s.getJSONArray("references").toList().contains(paper.getLong("id"))).collect(Collectors.toList());
+	private void makeBranches(List<JSONObject> data, int maxDepth) {
 		List<JSONObject> matches = data.stream().filter(s -> {
 			if(!s.has("references")) {
 				return false;
@@ -34,18 +32,28 @@ public class TreeCNA {
 			}
 			return false;
 		}).collect(Collectors.toList());
-		//System.out.println(matches.size());
 		for(int i = 0; i < matches.size(); i++) {
-			//System.out.println(matches.get(i));
 			branches.add(new TreeCNA(depth + 1, maxDepth, matches.get(i), data));
 		}
 	}
+	public String getPaperString(String indent) {
+		return indent + "T" + depth + ":\t" + "Title: " + paper.getString("title") + " ||||| Year: " + paper.getInt("year");
+	}
 	public String getString(String indent) {
-		String concat = indent + "T" + depth + ":\t" + paper + "\n";
+		String concat = getPaperString(indent) + "\n";
 		for(int i = 0; i < branches.size(); i++) {
 			concat += branches.get(i).getString(indent + "\t");
 		}
 		return concat;
+	}
+	public List<TreeCNA> getBranches() {
+		return branches;
+	}
+	public JSONObject getNodeData() {
+		return paper;
+	}
+	public boolean isLeaf() {
+		return branches.size() == 0;
 	}
 	public int getDepth() {
 		return depth;
