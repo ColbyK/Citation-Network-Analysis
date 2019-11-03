@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -37,7 +39,7 @@ public class ReaderCNA {
 		return new JSONObject(line);
 	}
 	public List<JSONObject> getNextNumberOfInstances(int size){
-		List<JSONObject> instances = new ArrayList<JSONObject>();
+		ArrayList<JSONObject> instances = new ArrayList<JSONObject>();
 		JSONObject current = getNextJSONLine();
 		if(size < -1 || current == null) {
 			return null;
@@ -50,13 +52,17 @@ public class ReaderCNA {
 			return instances;
 		}
 		else {
+			JSONObject[] arr = new JSONObject[size];
 			for(int i = 0; i < size; i++) {
-				instances.add(current);
+				arr[i] = current;
+				//instances.add(current);
 				current = getNextJSONLine();
 				if(current == null) {
 					break;
 				}
 			}
+			instances = new ArrayList<>(Arrays.asList(arr));
+			instances.removeAll(Collections.singleton(null));
 			return instances;
 		}
 	}
