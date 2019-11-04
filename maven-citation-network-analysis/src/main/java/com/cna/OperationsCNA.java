@@ -10,11 +10,12 @@ public class OperationsCNA {
 	private String keyword;
 	private int maxDepth;
 	private List<TreeCNA> roots;
-	public OperationsCNA(String key, ReaderCNA read, int sizeFromReader, int mDepth) {
+	public OperationsCNA(String key, ReaderCNA read, int sizeFromReader, int mDepth, long startTime) {
 		keyword = key;
 		maxDepth = mDepth;
 		roots = new ArrayList<TreeCNA>();
 		List<JSONObject> instances = read.getNextNumberOfInstances(sizeFromReader);
+		MainCNA.printProgramTime(startTime, "Reading");
 		List<JSONObject> rootMatches = getInstancesWithKeyword(keyword, instances);
 		for(int i = 0; i < rootMatches.size(); i++) {
 			roots.add(new TreeCNA(0, maxDepth, rootMatches.get(i), instances));
