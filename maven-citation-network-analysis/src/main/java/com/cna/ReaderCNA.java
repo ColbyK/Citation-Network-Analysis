@@ -12,11 +12,14 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+// Class for reading the data file
 public class ReaderCNA {
+	// Reader object
 	BufferedReader br;
 	public ReaderCNA(String fileName) {
 		readTXT(fileName);
 	}
+	// Reads the text file
 	private void readTXT(String fileName) {
 		try {
 			br = new BufferedReader(new FileReader(new File(fileName)));
@@ -25,6 +28,7 @@ public class ReaderCNA {
 			System.err.println(fileName + " Not found...");
 		}
 	}
+	// Helper method for getNextNumberOfInstances()
 	private JSONObject getNextJSONLine() {
 		String line = null;
 		try {
@@ -38,6 +42,7 @@ public class ReaderCNA {
 		}
 		return new JSONObject(line);
 	}
+	// Reads the number of instances based on size and converts to JSONObject ArrayList
 	public List<JSONObject> getNextNumberOfInstances(int size){
 		ArrayList<JSONObject> instances = new ArrayList<JSONObject>();
 		JSONObject current = getNextJSONLine();
@@ -66,6 +71,7 @@ public class ReaderCNA {
 			return instances;
 		}
 	}
+	// Close file when program finishes
 	public void finalize() {
 		try {
 			br.close();
